@@ -108,14 +108,18 @@ module FakeWeb
   def self.register_uri(*args)
     method = :any
     case args.length
-    when 3 then method, uri, options = *args
-    when 2 then         uri, options = *args
+    when 3 then method, resource, options = *args
+    when 2 then         resource, options = *args
     else   raise ArgumentError.new("wrong number of arguments (#{args.length} for method = :any, uri, options)")
     end
 
-    Registry.instance.register_uri(method, uri, options)
+    if resource.is_a?(Regexp)
+       Registry.instance.register_uri_pattern(method, resource, options)
+    else
+       Registry.instance.register_uri(method, resource, options)
+    end
   end
-
+  
   # call-seq:
   #   FakeWeb.response_for(method, uri)
   #   FakeWeb.response_for(uri)
@@ -142,12 +146,13 @@ module FakeWeb
   def self.registered_uri?(*args)
     method = :any
     case args.length
-    when 2 then method, uri = args
-    when 1 then         uri = args.first
+    when 2 then method, resource = args
+    when 1 then         resource = args.first
     else   raise ArgumentError.new("wrong number of arguments (#{args.length} for method = :any, uri)")
     end
 
-    Registry.instance.registered_uri?(method, uri)
+    return true if Registry.instance.registered_uri?(method, resource)
+    Registry.instance.registered_uri_pattern?(method,resource)
   end
 
 end
