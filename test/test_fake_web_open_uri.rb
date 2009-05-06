@@ -61,8 +61,8 @@ class TestFakeWebOpenURI < Test::Unit::TestCase
   end
   
   def test_register_uri_pattern
-    FakeWeb.register_uri(/http:\/\/mock\//, :file => File.dirname(__FILE__) + '/fixtures/test_example.txt')
-    open('http://mock/anything/ok.txt') do |f|
+    FakeWeb.register_uri(/http:\/\/mockaqui\//, :file => File.dirname(__FILE__) + '/fixtures/test_example.txt')
+    open('http://mockaqui/anything/ok.txt') do |f|
       assert 'test example content', f.readlines
     end
   end

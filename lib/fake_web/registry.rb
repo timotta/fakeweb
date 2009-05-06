@@ -55,7 +55,7 @@ module FakeWeb
       pattern_map.each do |pattern,hash|
         if pattern =~ without_port(uri) or pattern =~ uri
           return hash[method] if hash[method].is_a? Array
-          return hash[:any] if hash[method].is_a? Array
+          return hash[:any] if hash[:any].is_a? Array
         end
       end
       nil

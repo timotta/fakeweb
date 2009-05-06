@@ -33,6 +33,7 @@ module Net  #:nodoc: all
     alias :original_net_http_connect :connect
 
     def request(request, body = nil, &block)
+
       protocol = use_ssl? ? "https" : "http"
 
       path = request.path
