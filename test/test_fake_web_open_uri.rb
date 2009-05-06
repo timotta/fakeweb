@@ -67,4 +67,16 @@ class TestFakeWebOpenURI < Test::Unit::TestCase
     end
   end
   
+  def test_uri_pattern_has_lower_priority
+    FakeWeb.register_uri('http://mockaqui/anything/ok2.txt', :file => File.dirname(__FILE__) + '/fixtures/test_example.txt')
+    FakeWeb.register_uri(/http:\/\/mockaqui\//, :file => File.dirname(__FILE__) + '/fixtures/not_found.txt')
+    FakeWeb.register_uri('http://mockaqui/anything/ok.txt', :file => File.dirname(__FILE__) + '/fixtures/test_example.txt')
+    open('http://mockaqui/anything/ok.txt') do |f|
+      assert 'test example content', f.readlines
+    end
+    open('http://mockaqui/anything/ok2.txt') do |f|
+      assert 'test example content', f.readlines
+    end
+  end
+  
 end
