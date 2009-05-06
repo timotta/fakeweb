@@ -84,6 +84,16 @@ module FakeWeb
   #   See the <tt>Net::HTTPResponse</tt>
   #   documentation[http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/classes/Net/HTTPResponse.html]
   #   for more information on creating custom response objects.
+  #
+  #   You can also register uris by patterns using regular expressions. So, you can
+  #   put all pages of an domain, or a subpath, to return the same content. 
+  #
+  #     FakeWeb.register_uri(:get, /www\.example\.com/, :response => 'response_for_all_pages')
+  #
+  #   The registered patterns has a lower priority than registered absolute uris. So if 
+  #   you register a pattern and a uri, if the absolute uri was called, the response registered 
+  #   for it will be returned. Other uris will be returned with the response registered with 
+  #   the pattern. 
   # 
   # +options+ may also be an +Array+ containing a list of the above-described +Hash+.
   # In this case, FakeWeb will rotate through each provided response, you may optionally
