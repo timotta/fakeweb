@@ -10,24 +10,16 @@ module FakeWeb
     end
 
     def clean_registry
-      self.uri_map = Hash.new do |hash, key|
-        hash[key] = Hash.new(&hash.default_proc)
-      end
-      self.pattern_map = Hash.new do |hash, key|
-        hash[key] = Hash.new(&hash.default_proc)
-      end
+      self.uri_map = create_hash
+      self.pattern_map = create_hash
     end
 
     def register_uri(method, uri, options)
-      uri_map[normalize_uri(uri)][method] = [*[options]].flatten.collect do |option|
-        FakeWeb::Responder.new(method, uri, option, option[:times])
-      end
+      uri_map[normalize_uri(uri)][method] = create_responders(method, uri, options)
     end
-    
+
     def register_uri_pattern(method, pattern, options)
-      pattern_map[pattern][method] = [*[options]].flatten.collect do |option|
-        FakeWeb::Responder.new(method, pattern, option, option[:times])
-      end 
+      pattern_map[pattern][method] = create_responders(method, pattern, options)
     end
 
     def registered_uri?(method, uri)
@@ -80,6 +72,18 @@ module FakeWeb
     end
 
     private
+    
+    def create_responders(method,resource,options)
+      [*[options]].flatten.collect do |option|
+        FakeWeb::Responder.new(method, resource, option, option[:times])
+      end
+    end
+
+    def create_hash
+      Hash.new do |hash, key|
+        hash[key] = Hash.new(&hash.default_proc)
+      end
+    end
 
     def normalize_uri(uri)
       normalized_uri =
