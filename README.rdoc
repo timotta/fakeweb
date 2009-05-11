@@ -44,7 +44,7 @@ Start by requiring FakeWeb:
   
 === Registering URI patterns
 
-  FakeWeb.register_uri(:get, /www\.example\.com/, :response => "Hello World!")
+  FakeWeb.register_uri(:get, /www\.example\.com/, :string => "Hello World!")
   FakeWeb.register_uri(:get, "http://example.com/test3", :string => "Better priority")
 
 You can also register uris by patterns using regular expressions. So, you can

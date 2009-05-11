@@ -88,7 +88,7 @@ module FakeWeb
   #   You can also register uris by patterns using regular expressions. So, you can
   #   put all pages of an domain, or a subpath, to return the same content. 
   #
-  #     FakeWeb.register_uri(:get, /www\.example\.com/, :response => 'response_for_all_pages')
+  #     FakeWeb.register_uri(:get, /www\.example\.com/, :string => 'response_for_all_pages')
   #
   #   The registered patterns has a lower priority than registered absolute uris. So if 
   #   you register a pattern and a uri, if the absolute uri was called, the response registered 
